@@ -1,7 +1,15 @@
-
 function! SweetRunSpec()
-  cexpr system("bundle exec rspec -r /Users/dzepeda/.vim/ruby/sweet_vim_rspec_formatter.rb -f RSpec::Core::Formatters::VimFormatter " . expand("%:p"). " -l " . line("."))
+  let l:command = " rspec -r " 
+
+  if !exists("g:SweetVimRspecUseBundler")
+    let g:SweetVimRspecUseBundler = 0 
+  endif
+
+  if g:SweetVimRspecUseBundler == 1 
+    let l:command = "bundle exec " . l:command
+  endif
+
+  cexpr system(l:command . expand("~/.vim/plugin/sweet_vim_rspec_formatter.rb -f RSpec::Core::Formatters::VimFormatter ") . expand("%:p"). " -l " . line("."))
   cw
 endfunction
-command! -nargs=0 -complete=file SweetSpec call SweetRunSpec()
-map <leader>s :SweetSpec<space>
+command! SweetSpec call SweetRunSpec()
