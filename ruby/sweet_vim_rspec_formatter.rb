@@ -11,13 +11,24 @@ module RSpec
         # TODO: vim-side function for printing progress (if that's even possible)
 
         def example_failed example
+          data = ""
+          data << "+-+ "
+          data << example.description + " \n"
+
           exception = example.execution_result[:exception]
-          path = exception.backtrace.find do |frame|
-            frame =~ %r{\bspec/.*_spec\.rb:\d+\z}
-          end
-          message = format_message exception.message
-          path    = format_caller path
-          output.puts "#{path}: [FAIL] #{message}" if path
+          data << exception.backtrace.map{ | e | format_caller e }.compact.join("\n") + "\n"
+          data << exception.message
+          data << "\n+-+\n"
+          data << exception.backtrace.join("\n")
+          data << "\n-+-\n"
+          data << "\n-+-\n"
+          #path = exception.backtrace.find do |frame|
+            #frame =~ %r{\bspec/.*_spec\.rb:\d+\z}
+          #end
+          #message = format_message exception.message
+
+          #output.puts "#{path}: [FAIL] #{message}" if path
+          output.puts data
         end
 
         def example_pending example

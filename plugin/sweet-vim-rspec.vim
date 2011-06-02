@@ -1,4 +1,6 @@
 function! SweetRunSpec()
+  redraw!
+  echo "Running Specs\n" 
   let l:command = " rspec -r " 
 
   if !exists("g:SweetVimRspecUseBundler")
@@ -9,7 +11,8 @@ function! SweetRunSpec()
     let l:command = "bundle exec " . l:command
   endif
 
-  cexpr system(l:command . expand("~/.vim/plugin/sweet_vim_rspec_formatter.rb -f RSpec::Core::Formatters::VimFormatter ") . expand("%:p"). " -l " . line("."))
+  "cexpr system(l:command . expand("~/.vim/plugin/sweet_vim_rspec_formatter.rb -f RSpec::Core::Formatters::VimFormatter ") . expand("%:p"). " -l " . line("."))
+  cexpr system(l:command . expand("~/.vim/plugin/sweet_vim_rspec_formatter.rb -f RSpec::Core::Formatters::VimFormatter ") . expand("%:p"))
   cw
 endfunction
-command! SweetSpec call SweetRunSpec()
+command! -nargs=0 SweetSpec call SweetRunSpec()
