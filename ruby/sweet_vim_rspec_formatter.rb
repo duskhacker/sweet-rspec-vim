@@ -16,18 +16,16 @@ module RSpec
           data << example.description + " \n"
 
           exception = example.execution_result[:exception]
-          data << exception.backtrace.map{ | e | format_caller e }.compact.join("\n") + "\n"
+          #data << exception.backtrace.map{ | e | format_caller e }.compact.join("\n") + "\n"
+          data << exception.backtrace.find do |frame|
+            frame =~ %r{\bspec/.*_spec\.rb:\d+\z}
+          end + ": in `#{example.description}'\n"
+
           data << exception.message
-          data << "\n+-+\n"
+          data << "\n+-+ Backtrace\n"
           data << exception.backtrace.join("\n")
           data << "\n-+-\n"
           data << "\n-+-\n"
-          #path = exception.backtrace.find do |frame|
-            #frame =~ %r{\bspec/.*_spec\.rb:\d+\z}
-          #end
-          #message = format_message exception.message
-
-          #output.puts "#{path}: [FAIL] #{message}" if path
           output.puts data
         end
 
