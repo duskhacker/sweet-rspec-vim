@@ -13,34 +13,35 @@ module RSpec
         def example_failed example
           data = ""
           data << "+-+ "
-          data << example.description + " \n"
+          data << "[FAIL] #{example.description}\n"
 
           exception = example.execution_result[:exception]
-          #data << exception.backtrace.map{ | e | format_caller e }.compact.join("\n") + "\n"
           data << exception.backtrace.find do |frame|
             frame =~ %r{\bspec/.*_spec\.rb:\d+\z}
-          end + ": in `#{example.description}'\n"
+          end + ": in `#{example.description}'\n" rescue nil
 
           data << exception.message
           data << "\n+-+ Backtrace\n"
           data << exception.backtrace.join("\n")
-          data << "\n-+-\n"
-          data << "\n-+-\n"
+          data << "\n-+-\n" * 2
           output.puts data
         end
 
-        def example_pending example
-          message = format_message example.execution_result[:pending_message]
-          path    = format_caller example.location
-          output.puts "#{path}: [PEND] #{message}" if path
+        def example_pending(example)
+          data = ""
+          data << "+-+ "
+          data << "[PEND] #{example.description}\n"
+
+          pending = example.execution_result[:pending_message]
+          data << example.location + ": in `#{example.description}'"
+          data << "\n\n-+-\n"
+          output.puts data
         end
 
         def dump_failures *args; end
 
         def dump_pending *args; end
 
-        # suppress messages like:
-        #   Run filtered using {:focus=>true}
         def message msg; end
 
         # like BaseFormatter
@@ -54,30 +55,17 @@ module RSpec
         def close
           super
           summary = summary_line example_count, failure_count, pending_count
-          #if failure_count > 0
-            #growlnotify "--image ./autotest/fail.png -p Emergency -m '#{summary}' -t 'Spec failure detected'"
-          #elsif pending_count > 0
-            #growlnotify "--image ./autotest/pending.png -p High -m '#{summary}' -t 'Pending spec(s) present'"
-          #else
-            #growlnotify "--image ./autotest/pass.png -p 'Very Low' -m '#{summary}' -t 'All specs passed'"
-          #end
         end
 
-      private
+        private
 
         def format_message msg
           # NOTE: may consider compressing all whitespace here
           msg.gsub("\n", ' ')[0,40]
         end
 
-        def growlnotify str
-          system 'which growlnotify > /dev/null'
-          if $?.exitstatus == 0
-            system "growlnotify -n autotest #{str}"
-          end
-        end
-      end # class VimFormatter
-    end # module Formatter
-  end # module Runner
-end # module Spec
+      end
+    end 
+  end 
+end 
 
