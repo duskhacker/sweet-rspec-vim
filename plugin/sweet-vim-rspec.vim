@@ -12,7 +12,7 @@ function! SweetRunSpec()
   endif
 
   "cexpr system(l:command . expand("~/.vim/plugin/sweet_vim_rspec_formatter.rb -f RSpec::Core::Formatters::VimFormatter ") . expand("%:p"). " -l " . line("."))
-  cgete system(l:command . expand("~/.vim/plugin/sweet_vim_rspec_formatter.rb -f RSpec::Core::Formatters::VimFormatter ") . expand("%:p"))
+  cgete system(l:command . expand("~/.vim/plugin/sweet_vim_rspec_formatter.rb -f RSpec::Core::Formatters::SweetSpecFormatter ") . expand("%:p"))
   botright cwindow
   cw
   set foldmethod=marker
