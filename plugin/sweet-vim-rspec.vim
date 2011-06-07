@@ -1,21 +1,29 @@
-function! SweetRunSpec()
-  redraw!
-  echo "Running Specs\n" 
-  let l:command = " rspec -r " 
+function! SweetRunSpec(arg)
+  if a:arg != 'last'
+    let g:sweetVimSpecCommand = " rspec -r " 
 
-  if !exists("g:SweetVimRspecUseBundler")
-    let g:SweetVimRspecUseBundler = 0 
+    if !exists("g:SweetVimRspecUseBundler")
+      let g:SweetVimRspecUseBundler = 0 
+    endif
+
+    if g:SweetVimRspecUseBundler == 1 
+      let g:sweetVimSpecCommand = "bundle exec " . g:sweetVimSpecCommand
+    endif
+
+     let g:sweetVimSpecCommand = g:sweetVimSpecCommand . expand("~/.vim/plugin/sweet_vim_rspec_formatter.rb -f RSpec::Core::Formatters::SweetSpecFormatter ") . expand("%:p")
+
+     if a:arg == "atLine"
+       let g:sweetVimSpecCommand = g:sweetVimSpecCommand . " -l " . line(".")
+     endif
   endif
 
-  if g:SweetVimRspecUseBundler == 1 
-    let l:command = "bundle exec " . l:command
-  endif
-
-  "cexpr system(l:command . expand("~/.vim/plugin/sweet_vim_rspec_formatter.rb -f RSpec::Core::Formatters::VimFormatter ") . expand("%:p"). " -l " . line("."))
-  cgete system(l:command . expand("~/.vim/plugin/sweet_vim_rspec_formatter.rb -f RSpec::Core::Formatters::SweetSpecFormatter ") . expand("%:p"))
+  cgete system(g:sweetVimSpecCommand)
   botright cwindow
   cw
   set foldmethod=marker
   set foldmarker=+-+,-+-
+  echo "Done"
 endfunction
-command! -nargs=0 SweetSpec call SweetRunSpec()
+command! SweetSpec call SweetRunSpec("all")
+command! SweetSpecRunAtLine call SweetRunSpec("atLine")
+command! SweetSpecRunLast call SweetRunSpec("last")
