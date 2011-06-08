@@ -15,6 +15,8 @@ function! SweetRunSpec(arg)
      if a:arg == "atLine"
        let g:sweetVimSpecCommand = g:sweetVimSpecCommand . " -l " . line(".")
      endif
+
+     let g:sweetVimSpecCommand = g:sweetVimSpecCommand . " 2>/dev/null"
   endif
 
   cgete system(g:sweetVimSpecCommand)
