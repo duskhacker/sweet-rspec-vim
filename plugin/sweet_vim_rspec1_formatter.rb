@@ -12,7 +12,9 @@ module Spec
           data << "+-+ "
           data << "[FAIL] #{failure.header.match(/'(.*?)'/)[0]}\n"
 
-          data << failure.exception.backtrace.join("\n")
+          data << failure.exception.backtrace.find do |frame|
+            frame =~ %r{\bspec/.*_spec\.rb:\d+\z}
+          end + ": in `#{failure.header.match(/'(.*?)'/)[0]}'\n" #rescue nil
 
           data << failure.exception.message
           data << "\n+-+ Backtrace\n"
@@ -21,20 +23,15 @@ module Spec
           output.puts data
         end
 
-        #def dump_pending(counter, failure)
+        def example_pending(example, message, deprecated_pending_location=nil)
+          data = ""
+          data << "+-+ "
+          data << "[PEND] #{example.description}\n"
 
-          #data = ""
-          #data << "+-+ "
-          #data << "[PEND] #{failure.header.match(/'(.*?)'/)[0]}\n"
-
-          #data << failure.exception.backtrace.join("\n")
-
-          #data << failure.exception.message
-          #data << "\n+-+ Backtrace\n"
-          #data << failure.exception.clean_backtrace.join("\n")
-          #data << "\n-+-\n" * 2
-          #output.puts data
-        #end
+          data << example.location + ": in `#{example.description}'\n"
+          data << "\n-+-\n"
+          output.puts data
+        end
 
         def dump_summary(*); end
 
