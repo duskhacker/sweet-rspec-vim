@@ -1,30 +1,32 @@
 function! SweetRunSpec(arg)
-  if !exists('t:SweetVimSpecRspecVersion')
-    let t:SweetVimSpecRspecVersion =  empty( system("bundle exec spec --version 2>/dev/null" ) )  ? 2 : 1
+  echo "Running Specs...\n"
+  redraw!
+  if !exists('g:SweetVimRspecUseBundler')
+    let g:SweetVimRspecUseBundler = 1
   endif
-  if a:arg != 'last'
-    if t:SweetVimSpecRspecVersion == 2
-      let g:sweetVimSpecCommand = " rspec -r " 
+
+
+  if !exists('t:SweetVimRspecVersion')
+    let t:SweetVimRspecCommand =  g:SweetVimRspecUseBundler == 0 ? "" : "bundle exec " 
+    let t:SweetVimRspecVersion = empty( system("bundle exec spec --version 2>/dev/null" ) )  ? 2 : 1
+    if  t:SweetVimRspecVersion  > 1
+      let t:SweetVimRspecCommand .= "rspec -r " . expand("~/.vim/plugin/sweet_vim_rspec_formatter.rb") . " -f RSpec::Core::Formatters::SweetSpecFormatter "
     else
-      let g:sweetVimSpecCommand = " spec -br " 
+      let t:SweetVimRspecCommand .= "spec -br " . expand("~/.vim/plugin/sweet_vim_rspec1_formatter.rb") . " -f Spec::Runner::Formatter::VimFormatter "
     end
+  endif
 
-    let g:sweetVimSpecCommand = "bundle exec " . g:sweetVimSpecCommand
-
-    if t:SweetVimSpecRspecVersion == 2
-      let g:sweetVimSpecCommand = g:sweetVimSpecCommand . expand("~/.vim/plugin/sweet_vim_rspec_formatter.rb -f RSpec::Core::Formatters::SweetSpecFormatter ") . expand("%:p")
-    else
-      let g:sweetVimSpecCommand = g:sweetVimSpecCommand . expand("~/.vim/plugin/sweet_vim_rspec1_formatter.rb -f Spec::Runner::Formatter::VimFormatter ") . expand("%:p")
-    endif
+  if a:arg != 'last' " Need checking of command to make sure it is set. 
+    let t:SweetVimRspecCommand .= expand("%:p") . " " 
 
     if a:arg == "atLine"
-      let g:sweetVimSpecCommand = g:sweetVimSpecCommand . " -l " . line(".")
+      let t:SweetVimRspecCommand .=  "-l " . line(".") . " " 
     endif
 
-    let g:sweetVimSpecCommand = g:sweetVimSpecCommand . " 2>/dev/null"
+    let t:SweetVimRspecCommand .= "2>/dev/null"
   endif
 
-  cgete system(g:sweetVimSpecCommand)
+  cgete system(t:SweetVimRspecCommand)
   botright cwindow
   cw
   set foldmethod=marker
