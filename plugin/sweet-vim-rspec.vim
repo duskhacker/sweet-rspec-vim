@@ -11,11 +11,12 @@ function! SweetVimRspecRun(kind)
       let l:cmd .= "bundle exec "
     endif
     let l:cmd .=  "spec --version 2>/dev/null"
-    let t:SweetVimRspecVersion = empty( system("bundle exec " ) )  ? 2 : 1
+    let t:SweetVimRspecVersion = empty( system( l:cmd ) )  ? 2 : 1
   endif
 
   if !exists('t:SweetVimRspecExecutable') || empty(t:SweetVimRspecExecutable)
     let t:SweetVimRspecExecutable =  g:SweetVimRspecUseBundler == 0 ? "" : "bundle exec " 
+    echomsg "Checking Rspec version"
     if  t:SweetVimRspecVersion  > 1
       let t:SweetVimRspecExecutable .= "rspec -r " . expand("~/.vim/plugin/sweet_vim_rspec2_formatter.rb") . " -f RSpec::Core::Formatters::SweetVimRspecFormatter "
     else
@@ -36,6 +37,7 @@ function! SweetVimRspecRun(kind)
   endif
 
   cclose
+  echomsg t:SweetVimRspecExecutable . t:SweetVimRspecTarget . " 2>/dev/null"
   cgete system(t:SweetVimRspecExecutable . t:SweetVimRspecTarget . " 2>/dev/null")
   botright cwindow
   cw
