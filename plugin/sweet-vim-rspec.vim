@@ -16,7 +16,6 @@ function! SweetVimRspecRun(kind)
 
   if !exists('t:SweetVimRspecExecutable') || empty(t:SweetVimRspecExecutable)
     let t:SweetVimRspecExecutable =  g:SweetVimRspecUseBundler == 0 ? "" : "bundle exec " 
-    echomsg "Checking Rspec version"
     if  t:SweetVimRspecVersion  > 1
       let t:SweetVimRspecExecutable .= "rspec -r " . expand("~/.vim/plugin/sweet_vim_rspec2_formatter.rb") . " -f RSpec::Core::Formatters::SweetVimRspecFormatter "
     else
