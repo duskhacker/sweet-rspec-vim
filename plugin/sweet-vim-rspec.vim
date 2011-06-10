@@ -36,7 +36,6 @@ function! SweetVimRspecRun(kind)
   endif
 
   cclose
-  echomsg t:SweetVimRspecExecutable . t:SweetVimRspecTarget . " 2>/dev/null"
   cgete system(t:SweetVimRspecExecutable . t:SweetVimRspecTarget . " 2>/dev/null")
   botright cwindow
   cw
