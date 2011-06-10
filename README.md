@@ -27,9 +27,9 @@ Runs the last spec, no matter what line or buffer you are currently at.
 These are the mappings that I use, I have not included them in the
 plugin so as not to overwrite mappings you already have.
 
-   map <D-r> :SweetSpec<CR>
-   map <D-R> :SweetSpecRunAtLine<CR>
-   map <M-D-r> :SweetSpecRunLast<CR>
+* `map <D-r> :SweetSpec<CR>`
+* `map <D-R> :SweetSpecRunAtLine<CR>`
+* `map <M-D-r> :SweetSpecRunLast<CR>`
 
 Note: The <M-D-r> mapping requires :set macmeta
 
