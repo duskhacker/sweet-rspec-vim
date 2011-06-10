@@ -39,12 +39,12 @@ plugin so as not to overwrite mappings you already have.
 
 Simply copy these into your .vimrc to activate them. 
 
-Note: The <M-D-r> mapping requires `:set macmeta`
+Note: The `<M-D-r>` mapping requires `:set macmeta`
 
 ## Folding
 
 To navigate the Quickfix buffer output efficiently, you should be
-familiar with VIM folding. Take a look a `:h folding` for more
+familiar with VIM folding. Take a look a `:h usr_28` for more
 infomation.
 
 ## TODO
@@ -56,7 +56,8 @@ infomation.
 This is BETA software, it most likely has minor bugs. I've personally
 used it, but other platforms and installations will be different from
 mine and may cause problems. This software is only tested on MacVim 7.3
-(57)
+(57). If you find bugs, report them. Better yet, fix them and I'll
+include the fixes here. 
 
 ## Thanks
 
