@@ -1,6 +1,6 @@
 function! SweetRunSpec(arg)
-  echomsg "Starting..."
-  redraw!
+  echomsg "Running Specs..."
+  sleep 10m " Sleep long enough so MacVim redraws the screen so you can see the above message
   if !exists('g:SweetVimRspecUseBundler')
     let g:SweetVimRspecUseBundler = 1
   endif
