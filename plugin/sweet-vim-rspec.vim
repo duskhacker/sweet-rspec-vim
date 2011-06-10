@@ -1,5 +1,7 @@
 function! SweetRunSpec(arg)
+  let l:oldCmdHeight = &cmdheight
   echomsg "Running Specs..."
+  cclose
   sleep 10m " Sleep long enough so MacVim redraws the screen so you can see the above message
   if !exists('g:SweetVimRspecUseBundler')
     let g:SweetVimRspecUseBundler = 1
@@ -30,7 +32,10 @@ function! SweetRunSpec(arg)
   cw
   set foldmethod=marker
   set foldmarker=+-+,-+-
+  let &cmdheight = 2
+
   echo "Done"
+  let &cmdheight = l:oldCmdHeight
 endfunction
 command! SweetSpec call SweetRunSpec("all")
 command! SweetSpecRunAtLine call SweetRunSpec("atLine")
