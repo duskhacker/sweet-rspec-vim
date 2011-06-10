@@ -5,7 +5,7 @@ require 'pathname'
 module Spec
   module Runner
     module Formatter
-      class VimFormatter < BaseTextFormatter
+      class SweetVimRspecFormatter < BaseTextFormatter
 
         def dump_failure counter, failure
           data = ""

@@ -3,7 +3,7 @@ require 'rspec/core/formatters/base_text_formatter'
 module RSpec
   module Core
     module Formatters
-      class SweetSpecFormatter < BaseTextFormatter
+      class SweetVimRspecFormatter < BaseTextFormatter
 
         def example_failed(example)
           data = ""
