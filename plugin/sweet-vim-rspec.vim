@@ -1,32 +1,31 @@
 function! SweetRunSpec(arg)
-  echo "Running Specs...\n"
+  echomsg "Starting..."
   redraw!
   if !exists('g:SweetVimRspecUseBundler')
     let g:SweetVimRspecUseBundler = 1
   endif
 
-
   if !exists('t:SweetVimRspecVersion')
-    let t:SweetVimRspecCommand =  g:SweetVimRspecUseBundler == 0 ? "" : "bundle exec " 
     let t:SweetVimRspecVersion = empty( system("bundle exec spec --version 2>/dev/null" ) )  ? 2 : 1
+  endif
+
+  if !exists('t:SweetVimRspecExecutable') || empty(t:SweetVimRspecExecutable)
+    let t:SweetVimRspecExecutable =  g:SweetVimRspecUseBundler == 0 ? "" : "bundle exec " 
     if  t:SweetVimRspecVersion  > 1
-      let t:SweetVimRspecCommand .= "rspec -r " . expand("~/.vim/plugin/sweet_vim_rspec_formatter.rb") . " -f RSpec::Core::Formatters::SweetSpecFormatter "
+      let t:SweetVimRspecExecutable .= "rspec -r " . expand("~/.vim/plugin/sweet_vim_rspec_formatter.rb") . " -f RSpec::Core::Formatters::SweetSpecFormatter "
     else
-      let t:SweetVimRspecCommand .= "spec -br " . expand("~/.vim/plugin/sweet_vim_rspec1_formatter.rb") . " -f Spec::Runner::Formatter::VimFormatter "
-    end
+      let t:SweetVimRspecExecutable .= "spec -br " . expand("~/.vim/plugin/sweet_vim_rspec1_formatter.rb") . " -f Spec::Runner::Formatter::VimFormatter "
+    endif
   endif
 
   if a:arg != 'last' " Need checking of command to make sure it is set. 
-    let t:SweetVimRspecCommand .= expand("%:p") . " " 
-
+    let t:SweetVimRspecTarget = expand("%:p") . " " 
     if a:arg == "atLine"
-      let t:SweetVimRspecCommand .=  "-l " . line(".") . " " 
+      let t:SweetVimRspecTarget .=  "-l " . line(".") . " " 
     endif
-
-    let t:SweetVimRspecCommand .= "2>/dev/null"
   endif
 
-  cgete system(t:SweetVimRspecCommand)
+  cgete system(t:SweetVimRspecExecutable . t:SweetVimRspecTarget . " 2>/dev/null")
   botright cwindow
   cw
   set foldmethod=marker
