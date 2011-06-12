@@ -50,6 +50,8 @@ infomation.
 ## TODO
 
 * An output window that shows rspec executing. 
+* Right now, it only lists failing and pending specs, it should give a
+  full list of all specs run and mark/give details to failing/pending specs.
 
 ## Contributing
 
