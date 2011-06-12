@@ -23,7 +23,7 @@ function! SweetVimRspecRun(kind)
     endif
   endif
 
-  if a:kind !=  "Previous" " Need checking of command to make sure it is set. 
+  if a:kind !=  "Previous" 
     let t:SweetVimRspecTarget = expand("%:p") . " " 
     if a:kind == "Focused"
       let t:SweetVimRspecTarget .=  "-l " . line(".") . " " 
@@ -36,11 +36,20 @@ function! SweetVimRspecRun(kind)
   endif
 
   cclose
-  cgete system(t:SweetVimRspecExecutable . t:SweetVimRspecTarget . " 2>/dev/null")
-  botright cwindow
-  cw
-  set foldmethod=marker
-  set foldmarker=+-+,-+-
+  let l:errorFile = tempname()
+  cgete system(t:SweetVimRspecExecutable . t:SweetVimRspecTarget . " 2>" . l:errorFile)
+  if getfsize(l:errorFile) > 0 
+    execute 'silent edit ' . l:errorFile
+    set buftype=nofile
+    set nobuflisted
+  else
+    botright cwindow
+    cw
+    set foldmethod=marker
+    set foldmarker=+-+,-+-
+  endif
+
+  call delete(l:errorFile)
 
   let l:oldCmdHeight = &cmdheight
   let &cmdheight = 2
