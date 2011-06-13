@@ -33,9 +33,9 @@ resides.
 These are the mappings that I use, I have not included them in the
 plugin so as not to overwrite mappings you already have.
 
-* `map <D-r> :SweetSpec<CR>` "(CMD-r)  or (Apple-r)
-* `map <D-R> :SweetSpecRunAtLine<CR>` "(SHIFT-CMD-r) 
-* `map <M-D-r> :SweetSpecRunLast<CR>` "(OPT-CMD-r)
+* `map <D-r> :SweetVimRspecRunFile<CR>` "(CMD-r)  or (Apple-r)
+* `map <D-R> :SweetVimRspecRunFocused<CR>` "(SHIFT-CMD-r) 
+* `map <M-D-r> :SweetVimRspecRunPrevious<CR>` "(OPT-CMD-r)
 
 Simply copy these into your .vimrc to activate them. 
 
