@@ -38,10 +38,11 @@ function! SweetVimRspecRun(kind)
   cclose
 
   if exists('g:SweetVimRspecErrorFile') 
-    execute 'silent bdelete ' .  g:SweetVimRspecErrorFile
+    execute 'silent! bdelete ' .  g:SweetVimRspecErrorFile
   endif
 
   let g:SweetVimRspecErrorFile = tempname()
+  execute 'silent! wall'
   cgete system(t:SweetVimRspecExecutable . t:SweetVimRspecTarget . " 2>" . g:SweetVimRspecErrorFile)
   botright cwindow
   cw
@@ -49,7 +50,7 @@ function! SweetVimRspecRun(kind)
   setlocal foldmarker=+-+,-+-
 
   if getfsize(g:SweetVimRspecErrorFile) > 0 
-    execute 'silent split ' . g:SweetVimRspecErrorFile
+    execute 'silent! split ' . g:SweetVimRspecErrorFile
     setlocal buftype=nofile
   endif
 
