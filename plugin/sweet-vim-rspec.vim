@@ -36,20 +36,24 @@ function! SweetVimRspecRun(kind)
   endif
 
   cclose
-  let l:errorFile = tempname()
-  cgete system(t:SweetVimRspecExecutable . t:SweetVimRspecTarget . " 2>" . l:errorFile)
-  if getfsize(l:errorFile) > 0 
-    execute 'silent edit ' . l:errorFile
-    set buftype=nofile
-    set nobuflisted
-  else
-    botright cwindow
-    cw
-    set foldmethod=marker
-    set foldmarker=+-+,-+-
+
+  if exists('g:SweetVimRspecErrorFile') 
+    execute 'silent bdelete ' .  g:SweetVimRspecErrorFile
   endif
 
-  call delete(l:errorFile)
+  let g:SweetVimRspecErrorFile = tempname()
+  cgete system(t:SweetVimRspecExecutable . t:SweetVimRspecTarget . " 2>" . g:SweetVimRspecErrorFile)
+  botright cwindow
+  cw
+  setlocal foldmethod=marker
+  setlocal foldmarker=+-+,-+-
+
+  if getfsize(g:SweetVimRspecErrorFile) > 0 
+    execute 'silent split ' . g:SweetVimRspecErrorFile
+    setlocal buftype=nofile
+  endif
+
+  call delete(g:SweetVimRspecErrorFile)
 
   let l:oldCmdHeight = &cmdheight
   let &cmdheight = 2
