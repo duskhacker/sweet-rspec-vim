@@ -18,7 +18,11 @@ module Spec
 
           data << failure.exception.message
           data << "\n+-+ Backtrace\n"
-          data << failure.exception.clean_backtrace.join("\n")
+          data << if failure.exception.respond_to?(:clean_backtrace)
+            failure.exception.clean_backtrace.join("\n")
+          else
+            failure.exception.backtrace.join("\n")
+          end
           data << "\n-+-\n" * 2
           output.puts data
         end
