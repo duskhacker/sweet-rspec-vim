@@ -34,9 +34,9 @@ module RSpec
         end
 
         def example_passed(example)
-          data = ""
-          data << "[PASS] #{example.full_description}\n"
-          output.puts data
+          if ENV['SWEET_VIM_RSPEC_SHOW_PASSING'] == 'true'
+            output.puts "[PASS] #{example.full_description}\n"
+          end
         end
 
         def dump_failures *args; end

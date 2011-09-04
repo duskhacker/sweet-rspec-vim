@@ -45,12 +45,24 @@ Note: The `<M-D-r>` mapping requires `:set macmeta`
 
 To navigate the Quickfix buffer output efficiently, you should be
 familiar with VIM folding. Take a look a `:h usr_28` for more
-infomation.
+information.
+
+## Passing Specs
+
+Passing Specs can optionally be output to the Quickfix list. Setting the
+`SWEET_VIM_RSPEC_SHOW_PASSING` to `true` will enable this behavior. You can do this
+in your shell:
+
+	export SWEET_VIM_RSPEC_SHOW_PASSING="true" # for bash & zsh
+
+or in your .vimrc
+
+	let $SWEET_VIM_RSPEC_SHOW_PASSING="true"
 
 ## TODO
 
 * An output window that shows rspec executing. 
-* Right now, it only lists failing and pending specs, it should give a
+* Right now in RSPEC 1, it only lists failing and pending specs, it should give a
   full list of all specs run and mark/give details to failing/pending specs.
 
 ## Contributing
