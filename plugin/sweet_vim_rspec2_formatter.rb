@@ -13,7 +13,7 @@ module RSpec
           exception = example.execution_result[:exception]
           data << exception.backtrace.find do |frame|
             frame =~ %r{\bspec/.*_spec\.rb:\d+\z}
-          end + ": in `#{example.description}'\n" #rescue nil
+          end + ": in `#{example.description}'\n" rescue nil
 
           data << exception.message
           data << "\n+-+ Backtrace\n"
@@ -30,6 +30,12 @@ module RSpec
           pending = example.execution_result[:pending_message]
           data << example.location + ": in `#{example.description}'"
           data << "\n\n-+-\n"
+          output.puts data
+        end
+
+        def example_passed(example)
+          data = ""
+          data << "[PASS] #{example.full_description}\n"
           output.puts data
         end
 
