@@ -62,8 +62,6 @@ or in your .vimrc
 ## TODO
 
 * An output window that shows rspec executing. 
-* Right now in RSPEC 1, it only lists failing and pending specs, it should give a
-  full list of all specs run and mark/give details to failing/pending specs.
 
 ## Contributing
 

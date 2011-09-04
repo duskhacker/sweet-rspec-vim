@@ -26,6 +26,12 @@ module Spec
           data << "\n-+-\n" * 2
           output.puts data
         end
+        
+        def example_passed(example)
+          if ENV['SWEET_VIM_RSPEC_SHOW_PASSING'] == 'true'
+            output.puts "[PASS] #{example.description}\n"
+          end
+        end
 
         def example_pending(example, message, deprecated_pending_location=nil)
           data = ""
